@@ -17,7 +17,7 @@ import materialSchema from "../validations/materialSchema.js";
 const router = Router();
 
 router
-  .route("/courses")
+  .route("/all-courses")
   .get(authMiddleware, validateApiKey, checkRole, getCourses)
   .post(
     authMiddleware,
@@ -28,7 +28,7 @@ router
   );
 
 router
-  .route("/courses/:courseId/materials")
+  .route("/:courseId/materials")
   .get(authMiddleware, validateApiKey, checkRole, getCourseMaterialById)
   .post(
     authMiddleware,

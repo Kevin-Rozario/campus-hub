@@ -14,7 +14,7 @@ import resultSchema from "../validations/resultSchema.js";
 const router = Router();
 
 router
-  .route("/results")
+  .route("/upload-results")
   .post(
     authMiddleware,
     validateApiKey,
@@ -23,7 +23,7 @@ router
     createResult,
   );
 router
-  .route("/results/:studentId")
+  .route("/student-results/:studentId")
   .get(authMiddleware, validateApiKey, checkRole, getResultsById);
 
 export default router;

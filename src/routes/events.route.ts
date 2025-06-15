@@ -14,7 +14,7 @@ import eventSchema from "../validations/eventSchema.js";
 const router = Router();
 
 router
-  .route("/events")
+  .route("/all-events")
   .get(authMiddleware, validateApiKey, checkRole, getEventsByRole)
   .post(
     authMiddleware,

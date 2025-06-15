@@ -16,7 +16,7 @@ import enrollmentSchema from "../validations/enrollmentSchema.js";
 const router = Router();
 
 router
-  .route("/enrollments")
+  .route("/all-enrollments")
   .get(authMiddleware, validateApiKey, checkRole, getEnrollments)
   .post(
     authMiddleware,
@@ -26,10 +26,10 @@ router
     createEnrollmentInBatch,
   );
 router
-  .route("/enrollments/:studentId")
+  .route("/student-enrollments/:studentId")
   .get(authMiddleware, validateApiKey, checkRole, getEnrollmentsByStudentId);
 router
-  .route("/enrollments/:courseId")
+  .route("/course-enrollments/:courseId")
   .get(authMiddleware, validateApiKey, checkRole, getEnrollmentsByCourseId);
 
 export default router;

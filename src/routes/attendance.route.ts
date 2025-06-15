@@ -15,7 +15,7 @@ import attendanceSchema from "../validations/attendanceSchema.js";
 const router = Router();
 
 router
-  .route("/attendance")
+  .route("/take-attendance")
   .post(
     authMiddleware,
     validateApiKey,
@@ -25,11 +25,11 @@ router
   );
 
 router
-  .route("/attendance/:studentId")
+  .route("/student-attendance/:studentId")
   .get(authMiddleware, validateApiKey, checkRole, getAttendanceByStudentId);
 
 router
-  .route("/attendance/:courseId")
+  .route("/course-attendance/:courseId")
   .get(authMiddleware, validateApiKey, checkRole, getAttendanceByCourseId);
 
 export default router;
