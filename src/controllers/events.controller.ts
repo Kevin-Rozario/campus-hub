@@ -60,48 +60,53 @@ export const getEventsByRole = asyncHandler(
 
 export const createEvent = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.id;
-  const {
-    title,
-    description,
-    startDate,
-    endDate,
-    location,
-    eventForRole,
-  }: IEvent = req.body;
+  const Events: IEvent[] = req.body;
 
   if (!userId) {
     throw new ApiError(403, "User not found");
   }
 
-  if (
-    !title ||
-    !description ||
-    !startDate ||
-    !endDate ||
-    !location ||
-    !Array.isArray(eventForRole) ||
-    eventForRole.length === 0
-  ) {
-    throw new ApiError(400, "All fields are required");
+  if (!Array.isArray(Events) || Events.length === 0) {
+    throw new ApiError(400, "At least one event is required");
   }
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  const validatedEvents = Events.map((event, index) => {
+    const { title, description, startDate, endDate, location, eventForRole } =
+      event;
 
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-    throw new ApiError(400, "Invalid date format");
-  }
+    if (!title || !description || !startDate || !endDate || !location) {
+      throw new ApiError(400, `Missing fields in event at index ${index}`);
+    }
 
-  if (start > end) {
-    throw new ApiError(400, "Start date must be before end date");
-  }
+    if (!Array.isArray(eventForRole) || eventForRole.length === 0) {
+      throw new ApiError(
+        400,
+        `At least one role is required in event at index ${index}`
+      );
+    }
 
-  if (start < new Date()) {
-    throw new ApiError(400, "Start date must be in the future");
-  }
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-  const event = await prisma.event.create({
-    data: {
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      throw new ApiError(400, `Invalid date format in event at index ${index}`);
+    }
+
+    if (start > end) {
+      throw new ApiError(
+        400,
+        `Start date must be before end date in event at index ${index}`
+      );
+    }
+
+    if (start < new Date()) {
+      throw new ApiError(
+        400,
+        `Start date must be in the future in event at index ${index}`
+      );
+    }
+
+    return {
       title,
       description,
       startDate: start,
@@ -109,29 +114,21 @@ export const createEvent = asyncHandler(async (req: Request, res: Response) => {
       location,
       eventForRole,
       organizerId: userId,
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      startDate: true,
-      endDate: true,
-      location: true,
-      createdAt: true,
-      organizer: {
-        select: {
-          id: true,
-          fullName: true,
-        },
-      },
-    },
+    };
   });
 
-  if (!event) {
-    throw new ApiError(500, "Failed to create event");
+  const created = await prisma.event.createMany({
+    data: validatedEvents,
+    skipDuplicates: true,
+  });
+
+  if (created.count === 0) {
+    throw new ApiError(400, "No events were created");
   }
 
-  res
-    .status(201)
-    .json(new ApiReponse(201, "Event created successfully", event));
+  res.status(201).json(
+    new ApiReponse(201, `${created.count} event(s) created successfully`, {
+      createdCount: created.count,
+    })
+  );
 });

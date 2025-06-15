@@ -5,7 +5,11 @@ import prisma from "../config/db.config.js";
 import ApiReponse from "../utils/apiResponse.util.js";
 
 interface IAttendance {
-    
+  studentId: string;
+  courseId: string;
+  status: "Present" | "Absent" | "Late" | "Excused";
+  date: Date;
+  notes?: string;
 }
 
 export const getAttendanceByCourseId = asyncHandler(
@@ -104,8 +108,47 @@ export const getAttendanceByStudentId = asyncHandler(
   }
 );
 
-
 export const createAttendance = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user?.id;
-    const [{ studentId, courseId, status, date }]: IAttendance = req.body;
+    const records: IAttendance[] = req.body;
+
+    if (!userId) {
+      throw new ApiError(403, "User not found");
+    }
+
+    if (!Array.isArray(records) || records.length === 0) {
+      throw new ApiError(400, "At least one record is required");
+    }
+
+    const validatedRecords = records.map((record, index) => {
+      const { studentId, courseId, status, date } = record;
+
+      if (!studentId || !courseId || !status || !date) {
+        throw new ApiError(400, `Missing fields in record at index ${index}`);
+      }
+
+      const parsedDate = new Date(date);
+      if (isNaN(parsedDate.getTime())) {
+        throw new ApiError(400, `Invalid date in record at index ${index}`);
+      }
+
+      return {
+        studentId,
+        courseId,
+        status,
+        date: parsedDate,
+        facultyId: userId,
+      };
+    });
+
+    const attendance = await prisma.attendance.createMany({
+      data: validatedRecords,
+      skipDuplicates: true,
+    });
+
+    res
+      .status(201)
+      .json(new ApiReponse(201, "Attendance taken successfully", attendance));
+  }
+);
