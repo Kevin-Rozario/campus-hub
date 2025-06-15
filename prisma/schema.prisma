@@ -45,7 +45,7 @@ model User {
   email        String   @unique
   password     String
   fullName     String
-  phoneNumber  String?
+  phoneNumber  String?  @unique
   role         Role     @default(Student)
   isActive     Boolean  @default(true)
   refreshToken String?
@@ -60,6 +60,7 @@ model User {
   declaredResults Result[]       @relation("DeclaredByAdmin")
   enrollments     Enrollment[]
   attendances     Attendance[]
+  attendanceTaken Attendance[]   @relation("AttendanceTaken")
   createdCourses  Course[]       @relation("CreatedCourses")
   events          Event[]        @relation("EventOrganizedBy")
 
@@ -187,8 +188,12 @@ model Attendance {
   date      DateTime
   status    AttendanceStatus @default(Present)
   notes     String?
+  facultyId String
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
+
+  // Relations
+  faculty User @relation("AttendanceTaken", fields: [facultyId], references: [id], onDelete: Cascade)
 
   student User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
   course  Course @relation(fields: [courseId], references: [id], onDelete: Cascade)

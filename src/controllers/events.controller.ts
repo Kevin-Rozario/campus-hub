@@ -3,15 +3,14 @@ import asyncHandler from "../utils/asyncHandler.util.js";
 import prisma from "../config/db.config.js";
 import ApiError from "../utils/apiError.util.js";
 import ApiReponse from "../utils/apiResponse.util.js";
-import { Role } from "./auth.controller.js";
 
 interface IEvent {
   title: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   location: string;
-  eventForRole: Role;
+  eventForRole: string[];
 }
 
 export const getEventsByRole = asyncHandler(
@@ -24,8 +23,10 @@ export const getEventsByRole = asyncHandler(
 
     const events = await prisma.event.findMany({
       where: {
-        eventForRole: userRole,
-      }
+        eventForRole: {
+          has: userRole,
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -59,13 +60,28 @@ export const getEventsByRole = asyncHandler(
 
 export const createEvent = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.id;
-  const { title, description, startDate, endDate, location, eventForRole }: IEvent = req.body;
+  const {
+    title,
+    description,
+    startDate,
+    endDate,
+    location,
+    eventForRole,
+  }: IEvent = req.body;
 
   if (!userId) {
     throw new ApiError(403, "User not found");
   }
 
-  if (!title || !description || !startDate || !endDate || !location || !eventForRole) {
+  if (
+    !title ||
+    !description ||
+    !startDate ||
+    !endDate ||
+    !location ||
+    !Array.isArray(eventForRole) ||
+    eventForRole.length === 0
+  ) {
     throw new ApiError(400, "All fields are required");
   }
 
