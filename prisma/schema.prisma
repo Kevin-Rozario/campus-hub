@@ -61,6 +61,7 @@ model User {
   enrollments     Enrollment[]
   attendances     Attendance[]
   createdCourses  Course[]       @relation("CreatedCourses")
+  events          Event[]        @relation("EventOrganizedBy")
 
   @@index([email])
   @@index([role])
@@ -200,17 +201,22 @@ model Attendance {
 }
 
 model Event {
-  id          String    @id @default(uuid())
-  title       String
-  description String
-  date        DateTime
-  endDate     DateTime?
-  location    String?
-  isPublic    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id           String    @id @default(uuid())
+  title        String
+  description  String
+  startDate    DateTime
+  endDate      DateTime?
+  location     String?
+  organizerId  String
+  eventForRole String[]
+  isPublic     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  @@index([date])
+  // Relations
+  organizer User @relation("EventOrganizedBy", fields: [organizerId], references: [id], onDelete: Cascade)
+
+  @@index([startDate])
   @@index([isPublic])
   @@map("events")
 }
