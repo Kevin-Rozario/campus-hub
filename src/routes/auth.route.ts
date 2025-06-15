@@ -8,11 +8,14 @@ import {
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { Router } from "express";
+import { validationMiddleware } from "../middlewares/validate.middleware.js";
+import registerSchema from "../validations/registerSchema.js";
+import loginSchema from "../validations/loginSchema.js";
 
 const router = Router();
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/register", validationMiddleware(registerSchema), registerUser);
+router.post("/login", validationMiddleware(loginSchema), loginUser);
 router.post("/logout", authMiddleware, logoutUser);
 router.post("/generate-key", authMiddleware, createApiKey);
 router.get("/profile", authMiddleware, getProfile);
