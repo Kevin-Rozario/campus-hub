@@ -10,7 +10,7 @@ export const validationMiddleware = (schema: ZodSchema) => {
       const errorMessage = result.error.errors
         .map((err) => `${err.path.join(".")}: ${err.message}`)
         .join("; ");
-      return next(new ApiError(400, `Validation error: ${errorMessage}`));
+      throw new ApiError(400, errorMessage);
     }
 
     req.body = result.data;

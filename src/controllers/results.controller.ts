@@ -85,64 +85,61 @@ export const getResultsById = asyncHandler(
 export const createResult = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user?.id;
-    const {
-      studentId,
-      courseId,
-      grade,
-      numericGrade,
-      maxPoints,
-      examType,
-    }: IResult = req.body;
+    const results: IResult[] = req.body;
 
     if (!userId) {
       throw new ApiError(403, "User not found");
     }
 
-    if (!studentId || !courseId) {
-      throw new ApiError(400, "All fields are required");
+    if (!Array.isArray(results) || results.length === 0) {
+      throw new ApiError(400, "At least one result is required");
     }
 
-    const result = await prisma.result.create({
-      data: {
+    const validatedResults = results.map((result, index) => {
+      const { studentId, courseId, grade, numericGrade, maxPoints, examType } =
+        result;
+
+      if (
+        !studentId ||
+        !courseId ||
+        grade === undefined ||
+        numericGrade === undefined ||
+        maxPoints === undefined ||
+        !examType
+      ) {
+        throw new ApiError(400, `Missing fields in result at index ${index}`);
+      }
+
+      return {
         studentId,
         courseId,
         grade,
         numericGrade,
         maxPoints,
         examType,
-        declaredById: userId,
-      },
-      select: {
-        id: true,
-        student: {
-          select: {
-            id: true,
-            fullName: true,
-            email: true,
-            role: true,
-          },
-        },
-        course: {
-          select: {
-            code: true,
-            name: true,
-          },
-        },
-        grade: true,
-        numericGrade: true,
-        maxPoints: true,
-        examType: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      };
     });
 
-    if (!result) {
-      throw new ApiError(500, "Failed to create result");
+    const createdResults = await prisma.result.createMany({
+      data: validatedResults.map((result) => ({
+        ...result,
+        declaredById: userId,
+      })),
+      skipDuplicates: true,
+    });
+
+    if (createdResults.count === 0) {
+      throw new ApiError(400, "No results were created");
     }
 
-    res
-      .status(201)
-      .json(new ApiReponse(201, "Result created successfully", result));
+    res.status(201).json(
+      new ApiReponse(
+        201,
+        `${createdResults.count} result(s) created successfully`,
+        {
+          createdCount: createdResults.count,
+        },
+      ),
+    );
   },
 );
