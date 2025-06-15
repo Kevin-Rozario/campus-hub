@@ -1,0 +1,37 @@
+{
+  "name": "campus-hub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx watch src/index.ts",
+    "build": "tsc && node dist/index.js",
+    "generate": "npx prisma generate",
+    "migrate-dev": "npx prisma migrate dev",
+    "push": "npx prisma db push",
+    "studio": "npx prisma studio",
+    "format": "npx prettier --write ./src/**/*.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@tsconfig/node23": "^23.0.2",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "prisma": "^6.9.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.25.64"
+  }
+}
