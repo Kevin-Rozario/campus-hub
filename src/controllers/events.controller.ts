@@ -55,7 +55,7 @@ export const getEventsByRole = asyncHandler(
     res
       .status(200)
       .json(new ApiReponse(200, "Events retrieved successfully", events));
-  }
+  },
 );
 
 export const createEvent = asyncHandler(async (req: Request, res: Response) => {
@@ -81,7 +81,7 @@ export const createEvent = asyncHandler(async (req: Request, res: Response) => {
     if (!Array.isArray(eventForRole) || eventForRole.length === 0) {
       throw new ApiError(
         400,
-        `At least one role is required in event at index ${index}`
+        `At least one role is required in event at index ${index}`,
       );
     }
 
@@ -95,14 +95,14 @@ export const createEvent = asyncHandler(async (req: Request, res: Response) => {
     if (start > end) {
       throw new ApiError(
         400,
-        `Start date must be before end date in event at index ${index}`
+        `Start date must be before end date in event at index ${index}`,
       );
     }
 
     if (start < new Date()) {
       throw new ApiError(
         400,
-        `Start date must be in the future in event at index ${index}`
+        `Start date must be in the future in event at index ${index}`,
       );
     }
 
@@ -129,6 +129,6 @@ export const createEvent = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json(
     new ApiReponse(201, `${created.count} event(s) created successfully`, {
       createdCount: created.count,
-    })
+    }),
   );
 });

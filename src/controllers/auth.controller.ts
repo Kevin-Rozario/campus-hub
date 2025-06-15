@@ -85,7 +85,7 @@ export const registerUser = asyncHandler(
     res
       .status(201)
       .json(new ApiReponse(201, "User registered successfully", user));
-  }
+  },
 );
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
@@ -156,7 +156,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         role: user.role,
         accessToken,
         refreshToken,
-      })
+      }),
     );
 });
 
@@ -227,7 +227,7 @@ export const createApiKey = asyncHandler(
     res
       .status(200)
       .json(new ApiReponse(201, "API key created successfully", { apiKey }));
-  }
+  },
 );
 
 export const getProfile = asyncHandler(async (req: Request, res: Response) => {
@@ -313,5 +313,5 @@ export const refreshToken = asyncHandler(
       })
       .status(200)
       .json(new ApiReponse(200, "User logged in successfully", null));
-  }
+  },
 );

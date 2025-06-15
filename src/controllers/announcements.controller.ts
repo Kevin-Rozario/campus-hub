@@ -45,9 +45,9 @@ export const createAnnouncement = asyncHandler(
     res
       .status(201)
       .json(
-        new ApiReponse(201, "Announcement created successfully", announcement)
+        new ApiReponse(201, "Announcement created successfully", announcement),
       );
-  }
+  },
 );
 
 export const getAnnouncements = asyncHandler(
@@ -78,8 +78,8 @@ export const getAnnouncements = asyncHandler(
         new ApiReponse(
           200,
           "Announcements retrieved successfully",
-          announcements
-        )
+          announcements,
+        ),
       );
-  }
+  },
 );

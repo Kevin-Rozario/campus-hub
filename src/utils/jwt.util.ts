@@ -23,7 +23,7 @@ export const generateAccessToken = (user: IUser): string => {
     secret,
     {
       expiresIn,
-    }
+    },
   );
 };
 
@@ -44,7 +44,7 @@ export const generateRefreshToken = (user: IUser): string => {
     secret,
     {
       expiresIn,
-    }
+    },
   );
 };
 

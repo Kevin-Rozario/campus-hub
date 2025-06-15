@@ -75,5 +75,5 @@ export const changeUserRole = asyncHandler(
     res
       .status(200)
       .json(new ApiReponse(200, "User role updated successfully", updatedUser));
-  }
+  },
 );

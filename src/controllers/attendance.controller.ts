@@ -55,9 +55,9 @@ export const getAttendanceByCourseId = asyncHandler(
     res
       .status(200)
       .json(
-        new ApiReponse(200, "Attendance retrieved successfully", attendance)
+        new ApiReponse(200, "Attendance retrieved successfully", attendance),
       );
-  }
+  },
 );
 
 export const getAttendanceByStudentId = asyncHandler(
@@ -103,9 +103,9 @@ export const getAttendanceByStudentId = asyncHandler(
     res
       .status(200)
       .json(
-        new ApiReponse(200, "Attendance retrieved successfully", attendance)
+        new ApiReponse(200, "Attendance retrieved successfully", attendance),
       );
-  }
+  },
 );
 
 export const createAttendance = asyncHandler(
@@ -150,5 +150,5 @@ export const createAttendance = asyncHandler(
     res
       .status(201)
       .json(new ApiReponse(201, "Attendance taken successfully", attendance));
-  }
+  },
 );

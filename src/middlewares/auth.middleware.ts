@@ -17,7 +17,7 @@ declare global {
 export const authMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { accessToken, refreshToken } = req.cookies;
 
@@ -60,7 +60,7 @@ export const checkRole = (req: Request, res: Response, next: NextFunction) => {
 export const validateApiKey = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const apiKey = req.headers["x-api-key"] as string;
 

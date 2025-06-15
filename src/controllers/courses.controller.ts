@@ -98,7 +98,7 @@ export const createCourse = asyncHandler(
     res
       .status(201)
       .json(new ApiReponse(201, "Course created successfully", course));
-  }
+  },
 );
 
 export const getCourseMaterialById = asyncHandler(
@@ -139,7 +139,7 @@ export const getCourseMaterialById = asyncHandler(
     res
       .status(200)
       .json(new ApiReponse(200, "Materials retrieved successfully", materials));
-  }
+  },
 );
 
 export const createCourseMaterialById = asyncHandler(
@@ -209,5 +209,5 @@ export const createCourseMaterialById = asyncHandler(
     res
       .status(201)
       .json(new ApiReponse(201, "Material created successfully", material));
-  }
+  },
 );

@@ -79,7 +79,7 @@ export const getResultsById = asyncHandler(
     res
       .status(200)
       .json(new ApiReponse(200, "Results retrieved successfully", results));
-  }
+  },
 );
 
 export const createResult = asyncHandler(
@@ -144,5 +144,5 @@ export const createResult = asyncHandler(
     res
       .status(201)
       .json(new ApiReponse(201, "Result created successfully", result));
-  }
+  },
 );
