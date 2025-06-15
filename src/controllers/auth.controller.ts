@@ -11,7 +11,7 @@ import {
 } from "../utils/jwt.util.js";
 import { generateApiKey, hashApiKey } from "../utils/apiKey.util.js";
 
-enum Role {
+export enum Role {
   student = "Student",
   faculty = "Faculty",
   admin = "Admin",
