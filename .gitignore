@@ -136,4 +136,4 @@ dist
 .pnp.*
 
 # Ignore Prisma generated files
-generated/prisma
+generated/
