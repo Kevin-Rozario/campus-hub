@@ -17,7 +17,7 @@ const router = Router();
 router.post("/register", validationMiddleware(registerSchema), registerUser);
 router.post("/login", validationMiddleware(loginSchema), loginUser);
 router.post("/logout", authMiddleware, logoutUser);
-router.post("/generate-key", authMiddleware, createApiKey);
+router.get("/generate-key", authMiddleware, createApiKey);
 router.get("/profile", authMiddleware, getProfile);
 router.get("/refresh-token", refreshToken);
 

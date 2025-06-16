@@ -14,7 +14,7 @@ import announcementSchema from "../validations/announcementSchema.js";
 const router = Router();
 
 router
-  .route("/announcements")
+  .route("/all-announcements")
   .get(authMiddleware, validateApiKey, checkRole, getAnnouncements)
   .post(
     authMiddleware,

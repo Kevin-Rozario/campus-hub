@@ -1,5 +1,5 @@
 const permissions = {
-  "/announcements": {
+  "/all-announcements": {
     GET: ["Student", "Faculty", "Admin"],
     POST: ["Admin", "Faculty"],
   },
@@ -9,7 +9,7 @@ const permissions = {
   "/student-attendance/:studentId": {
     GET: ["Student", "Admin", "Faculty"],
   },
-  "course-attendance/:courseId": {
+  "/course-attendance/:courseId": {
     GET: ["Admin", "Faculty"],
   },
   "/all-courses": {
@@ -40,10 +40,10 @@ const permissions = {
   "/student-results/:studentId": {
     GET: ["Student", "Faculty", "Admin"],
   },
-  "/admin/users": {
+  "/users": {
     GET: ["Admin"],
   },
-  "/admin/users/:id/role": {
+  "/users/:id/role": {
     PUT: ["Admin"],
   },
 };

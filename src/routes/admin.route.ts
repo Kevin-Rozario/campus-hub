@@ -12,11 +12,9 @@ import {
 const router = Router();
 
 router
-  .route("/admin/users")
+  .route("/users")
   .get(authMiddleware, validateApiKey, checkRole, getAllUsers);
 
-router
-  .route("/admin/users/:id/role")
-  .put(authMiddleware, checkRole, changeUserRole);
+router.route("/users/:id/role").put(authMiddleware, checkRole, changeUserRole);
 
 export default router;
