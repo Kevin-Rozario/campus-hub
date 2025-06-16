@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "start": "tsx watch src/index.ts",
     "build": "tsc && node dist/index.js",
@@ -10,6 +13,8 @@
     "migrate-dev": "npx prisma migrate dev",
     "push": "npx prisma db push",
     "studio": "npx prisma studio",
+    "seed": "npx prisma db seed",
+    "reset": "npx prisma migrate reset --skip-seed",
     "format": "npx prettier --write ./src/**/*.ts"
   },
   "keywords": [],
@@ -17,11 +22,14 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@tsconfig/node23": "^23.0.2",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^24.0.1",
     "prisma": "^6.9.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
